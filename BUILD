@@ -19,5 +19,14 @@ cc_binary(
 cc_binary(
     name = "stl_practice",
     srcs = ["stl_practice.cc"],
-    copts = ["--std=c++17"]
+    copts = ["--std=c++17"],
+)
+
+cc_binary(
+    name = "eigen_practice",
+    srcs = ["eigen_practice.cc"],
+    copts = ["--std=c++17","-Iexternal/eigen"],
+    deps = [
+        "@eigen//:eigen",
+    ],
 )
