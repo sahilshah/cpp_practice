@@ -30,3 +30,9 @@ cc_binary(
         "@eigen//:eigen",
     ],
 )
+
+cc_binary(
+    name = "common_ds",
+    srcs = ["common_ds.cc"],
+    copts = ["--std=c++17"],
+)
