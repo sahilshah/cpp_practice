@@ -36,3 +36,9 @@ cc_binary(
     srcs = ["common_ds.cc"],
     copts = ["--std=c++17"],
 )
+
+cc_binary(
+    name = "graph",
+    srcs = ["graph.cc"],
+    copts = ["--std=c++17"],
+)
