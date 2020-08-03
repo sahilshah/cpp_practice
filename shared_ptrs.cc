@@ -16,6 +16,21 @@ void wrap_in_sp2(int y, std::shared_ptr<int>& sp) {
 	// std::cout << "Use count: " << sp.use_count() << std::endl;
 }
 
+class IntWrapper {
+public:
+	IntWrapper() = default;
+
+	IntWrapper(int x) : x_(x) { }
+
+	~IntWrapper() {
+		std::cout << "Called!!" << std::endl;
+	}
+
+private:
+	int x_;
+
+};
+
 
 int main(int argc, char** argv) {
 
@@ -38,5 +53,18 @@ int main(int argc, char** argv) {
 	std::cout << "Ptr: " << sp3 << std::endl;
 	std::cout << "Val: " << *sp3 << std::endl;
 	std::cout << "Use count: " << sp3.use_count() << std::endl;
+
+	std::shared_ptr<IntWrapper> sp_iw(new IntWrapper(3));
+	std::shared_ptr<IntWrapper> sp_iw2(new IntWrapper(5));
+	std::cout << "Use count: " << sp_iw.use_count() << std::endl;
+	std::cout << "Use count: " << sp_iw2.use_count() << std::endl;
+	std::cout << "Ptr: " << sp_iw.get() << std::endl;
+	std::cout << "Ptr: " << sp_iw2.get() << std::endl;
+	sp_iw2 = sp_iw;
+	std::cout << "Use count: " << sp_iw.use_count() << std::endl;
+	std::cout << "Use count: " << sp_iw2.use_count() << std::endl;
+	std::cout << "Ptr: " << sp_iw.get() << std::endl;
+	std::cout << "Ptr: " << sp_iw2.get() << std::endl;
+
 	return 0;
 }
