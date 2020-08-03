@@ -54,3 +54,9 @@ cc_binary(
     srcs = ["bfs.cc"],
     copts = ["--std=c++17"],
 )
+
+cc_binary(
+    name = "binary_search",
+    srcs = ["binary_search.cc"],
+    copts = ["--std=c++17"],
+)
