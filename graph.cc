@@ -4,24 +4,23 @@
 #include <string>
 #include <vector>
 
-template <typename ElemType>
-class Graph {
- public:
+template <typename ElemType> class Graph {
+public:
   struct GraphNode;
   struct GraphEdge;
 
   struct GraphEdge {
-    const GraphNode* from_node;
-    const GraphNode* to_node;
+    const GraphNode *from_node;
+    const GraphNode *to_node;
     double weight = 0.0;
   };
 
   struct GraphNode {
-    GraphNode(const ElemType& elem) : elem(elem) {}
+    GraphNode(const ElemType &elem) : elem(elem) {}
     ElemType elem;
-    std::vector<GraphEdge*> out_neighbors;
+    std::vector<GraphEdge *> out_neighbors;
     // maybe if needed?
-    std::vector<GraphEdge*> in_neighbors;
+    std::vector<GraphEdge *> in_neighbors;
 
     void Print() const { std::cout << "This elem is: " << elem << std::endl; }
   };
@@ -29,13 +28,13 @@ class Graph {
   Graph() = default;
   ~Graph() = default;
 
-  std::shared_ptr<const GraphNode> AddVertex(const ElemType& elem) {
+  std::shared_ptr<const GraphNode> AddVertex(const ElemType &elem) {
     std::shared_ptr<GraphNode> graph_node(new GraphNode(elem));
     vertices_.emplace_back(graph_node);
     return graph_node;
   }
 
-  std::shared_ptr<const GraphNode> FindVertex(const ElemType& elem) {
+  std::shared_ptr<const GraphNode> FindVertex(const ElemType &elem) {
     const auto itr = std::find_if(vertices_.begin(), vertices_.end(),
                                   [&elem](const std::shared_ptr<GraphNode> g) {
                                     return g->elem == elem;
@@ -45,7 +44,7 @@ class Graph {
 
   // AddConnection(const )
 
- private:
+private:
   std::vector<std::shared_ptr<GraphNode>> vertices_;
 };
 

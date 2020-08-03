@@ -1,14 +1,28 @@
 #include <iostream>
 
-template <typename T>
-class SimpleSharedPtr {
- public:
+/*
+
+Some notes:
+shared_ptr control blocks like constructing, assignment, copy, destructing etc.
+are thread safe. Therefore, the operations on the counter and pointer need to be
+atomic.
+
+However, the non const member access is not atomic so could potentially cause a
+data race.
+
+TODO: Make the counter and pointer changes atomic. Use std::atomic, std::mutex,
+or std::lock_guard
+
+*/
+
+template <typename T> class SimpleSharedPtr {
+public:
   SimpleSharedPtr() {
     counter_ = new int(0);
     ptr_ = nullptr;
   }
 
-  explicit SimpleSharedPtr(T* t_ptr) {
+  explicit SimpleSharedPtr(T *t_ptr) {
     ptr_ = t_ptr;
     counter_ = new int(1);
   }
@@ -27,7 +41,7 @@ class SimpleSharedPtr {
     }
   }
 
-  SimpleSharedPtr(SimpleSharedPtr& other) {
+  SimpleSharedPtr(SimpleSharedPtr &other) {
     counter_ = other.counter_;
     ptr_ = other.ptr_;
     if (counter_) {
@@ -37,47 +51,47 @@ class SimpleSharedPtr {
     }
   }
 
-  SimpleSharedPtr& operator=(const SimpleSharedPtr& other) {
+  SimpleSharedPtr &operator=(const SimpleSharedPtr &other) {
     if (this != &other) {
       // Do assignment only if its not the same.
       if (counter_) {
         (*counter_)--;
-      	std::cout << "Decrementing on reassign" << std::endl;
+        std::cout << "Decrementing on reassign" << std::endl;
         if (*counter_ == 0) {
-      		std::cout << "Deleting on count 0" << std::endl;
-        	if (ptr_){
-        		delete ptr_;
-        	}
-        	delete counter_;
+          std::cout << "Deleting on count 0" << std::endl;
+          if (ptr_) {
+            delete ptr_;
+          }
+          delete counter_;
         }
       }
     }
     return *this;
   }
 
-  void reset(T* t_ptr) {
+  void reset(T *t_ptr) {
     ptr_ = t_ptr;
     *counter_ = 1;
   }
 
   int use_count() const { return *counter_; }
 
-  T* get() const { return ptr_; }
+  T *get() const { return ptr_; }
 
-  T& operator*() { return *ptr_; }
+  T &operator*() { return *ptr_; }
 
- private:
-  int* counter_;
-  T* ptr_;
+private:
+  int *counter_;
+  T *ptr_;
 };
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
   SimpleSharedPtr<int> sp;
   sp.reset(new int(10));
   std::cout << "use count: " << sp.use_count() << std::endl;
   SimpleSharedPtr<int> sp2(sp);
   std::cout << "use count: " << sp2.use_count() << std::endl;
-  int* x = new int(5);
+  int *x = new int(5);
   SimpleSharedPtr<int> sp3(x);
   SimpleSharedPtr<int> sp4 = sp3;
   sp3 = sp;
