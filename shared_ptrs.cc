@@ -21,6 +21,8 @@ public:
 
   IntWrapper(int x) : x_(x) {}
 
+  int Get() const { return x_; }
+
   ~IntWrapper() { std::cout << "Called!!" << std::endl; }
 
 private:
