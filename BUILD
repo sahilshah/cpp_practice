@@ -48,3 +48,9 @@ cc_binary(
     srcs = ["dfs.cc"],
     copts = ["--std=c++17"],
 )
+
+cc_binary(
+    name = "bfs",
+    srcs = ["bfs.cc"],
+    copts = ["--std=c++17"],
+)
